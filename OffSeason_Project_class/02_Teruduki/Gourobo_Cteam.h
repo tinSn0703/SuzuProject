@@ -27,7 +27,7 @@ class Main
 //variables
 private:
 	
-	Bit24Controller::WiiClassic _controller;
+	Controller::WiiClassic _controller;
 	
 	Mechanum _wheel;
 	
@@ -43,6 +43,9 @@ private:
 	YesNo _is_move_back		:1;	//Œã‚ë‚É“®‚«‚Ü‚·?
 	YesNo _is_move_left		:1;	//¶‚É“®‚«‚Ü‚·?
 	YesNo _is_move_right	:1;	//‰E‚É“®‚«‚Ü‚·?
+	
+	LimitSensor _limit_arm_raise_over;
+	LimitSensor _limit_arm_raise_under;
 	
 	/* ƒ}ƒVƒ“‚Ì‰Šúİ’è’†‚Å‚·‚©? */
 	YesNo _is_machine_init :1;

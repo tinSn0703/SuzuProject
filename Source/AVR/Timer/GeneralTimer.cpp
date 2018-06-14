@@ -164,54 +164,6 @@ mSecond To_ms(const CountValue _time)
 
 /************************************************************************/
 
-//----------------------------------------------------------------------//
-
-Count :: Count(const mSecond _count_time)
-
-	: _mem_count_time(_count_time)
-{
-	_mem_counter = COUNTER_MAX_VALUE;
-}
-
-//----------------------------------------------------------------------//
-
-YesNo Count :: Is_count_running()
-{
-	return (_mem_counter != COUNTER_MAX_VALUE ? YES : NO);
-}
-
-//----------------------------------------------------------------------//
-
-void Count :: Start()
-{
-	_mem_counter = _glo.Current() + (_mem_count_time * CHANGE_COUNT_VALUE);
-}
-
-//----------------------------------------------------------------------//
-
-YesNo Count :: Is_count_finish()
-{
-	if (_glo.Current() >= _mem_counter)
-	{
-		_mem_counter = COUNTER_MAX_VALUE;
-		
-		return YES;
-	}
-	
-	return NO;
-}
-
-//----------------------------------------------------------------------//
-
-void Count :: End()
-{
-	_mem_counter = COUNTER_MAX_VALUE;
-}
-
-//----------------------------------------------------------------------//
-
-/************************************************************************/
-
 }
 
 }

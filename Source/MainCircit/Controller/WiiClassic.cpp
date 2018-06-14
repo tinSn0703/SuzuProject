@@ -4,58 +4,24 @@
 #include <Others/Others.h>
 #include <AVR/Uart/Uart.h>
 #include <AVR/Timer/GeneralTimer.h>
+#include <AVR/Timer/Counter.h>
 #include <MainCircit/Direction.h>
 #include <MainCircit/Controller/WiiClassic.h>
 
 /************************************************************************/
 
-namespace Bit24Controller
+namespace Controller
 {
 
 /************************************************************************/
 
 //----------------------------------------------------------------------//
 
-WiiClassic :: WiiClassic(const UartNum _uart_num, const BOOL _is_poss_rewrite)
+WiiClassic::WiiClassic(const UartNum _uart_num, const BOOL _is_poss_rewrite)
 
 	: Bit24Controller(_uart_num, _is_poss_rewrite)
-{}
-
-//----------------------------------------------------------------------//
-
-/************************************************************************/
-
-//----------------------------------------------------------------------//
-
-WiiClassicDoubleLine::WiiClassicDoubleLine
-(
-	const UartNum	_uart_num_main, 
-	const UartNum	_uart_num_sub, 
-	const YesNo		_is_data_rewrite
-)
-	: ControllerBaseDoubleLine(_uart_num_main, _uart_num_sub, _is_data_rewrite)
-{}
-
-//----------------------------------------------------------------------//
-
-/************************************************************************/
-
-//----------------------------------------------------------------------//
-
-WiiClassicAddPush :: WiiClassicAddPush(const UartNum _uart_num, const BOOL _is_poss_rewrite)
-
-	: Bit24Controller(_uart_num, _is_poss_rewrite)
-{}
-
-//----------------------------------------------------------------------//
-
-void WiiClassicAddPush :: Read()
 {
-	Stock();
 	
-	Bit24Controller::Read();
-	
-	if (Get_error_state() == READ_SUCCESS)	Set_btn_data();
 }
 
 //----------------------------------------------------------------------//
@@ -64,24 +30,25 @@ void WiiClassicAddPush :: Read()
 
 //----------------------------------------------------------------------//
 
-WiiClassicAddPushDoubleLine::WiiClassicAddPushDoubleLine
-(
-	const UartNum	_uart_num_main, 
-	const UartNum	_uart_num_sub, 
-	const YesNo		_is_data_rewrite /* = NO */
-)
-	: ControllerBaseDoubleLine(_uart_num_main, _uart_num_sub, _is_data_rewrite)
-{}
+WiiClassicAddPush::WiiClassicAddPush(const UartNum _uart_num, const BOOL _is_poss_rewrite)
+
+	: Bit24Controller(_uart_num, _is_poss_rewrite)
+{
+	
+}
 
 //----------------------------------------------------------------------//
 
-void WiiClassicAddPushDoubleLine::Read()
+void WiiClassicAddPush::Read()
 {
-	Stock();
+	Stock(_mem_data._all._directions);
 	
-	ControllerBaseDoubleLine::Read_double();
+	Bit24Controller::Read();
 	
-	if (Get_error_state() == READ_SUCCESS)	Set_btn_data();
+	if (Get_error_state() == READ_SUCCESS)
+	{
+		Set_btn_data(_mem_data._all._directions);
+	}
 }
 
 //----------------------------------------------------------------------//

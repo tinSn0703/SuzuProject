@@ -67,7 +67,10 @@ void FourOmuni::Move(const double _deg)
 	_motor[WheelPlace::BACK_LEFT  ].Drive(Get_pwm() * sin((_deg - 225 + _mem_move_front_deg) * RAD_PER_DEG));
 	_motor[WheelPlace::FRONT_LEFT ].Drive(Get_pwm() * sin((_deg - 315 + _mem_move_front_deg) * RAD_PER_DEG));
 	
-	if (_motor[WheelPlace::FRONT_RIGHT].Get_pwm() == _motor[WheelPlace::BACK_RIGHT].Get_pwm())
+	if (
+			(_motor[0].Get_pwm() == _motor[1].Get_pwm()) ==
+			(_motor[2].Get_pwm() == _motor[3].Get_pwm())
+		)
 	{
 		Set(Get_pwm());
 	}
@@ -106,7 +109,7 @@ void FourOmuni::Adjust_power(const double _persent)
 		{
 			for (uByte i = 0; i < 4; i++)
 			{
-				if (_motor[i] == (_motor[i].Is_signal_reverse() ? SIGNAL_REVERSE : SIGNAL_FORWARD))
+				if (_motor[i].Get_sig() == (_motor[i].Is_signal_reverse() ? SIGNAL_REVERSE : SIGNAL_FORWARD))
 				{
 					_motor[i] *= (_persent / 100);
 				}
@@ -118,7 +121,7 @@ void FourOmuni::Adjust_power(const double _persent)
 		{
 			for (uByte i = 0; i < 4; i++)
 			{
-				if (_motor[i] == (_motor[i].Is_signal_reverse() ? SIGNAL_FORWARD : SIGNAL_REVERSE))
+				if (_motor[i].Get_sig() == (_motor[i].Is_signal_reverse() ? SIGNAL_FORWARD : SIGNAL_REVERSE))
 				{
 					_motor[i] *= (_persent / 100);
 				}

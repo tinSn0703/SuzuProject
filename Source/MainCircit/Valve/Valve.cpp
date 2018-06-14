@@ -1,61 +1,80 @@
 
-
 #include <akilcd/akilcd.h>
 #include <Others/BOOL.h>
-#include <AVR/Timer/GeneralTimer.h>
-#include <AVR/Uart/Uart.h>
+#include <akilcd/akilcd.h>
 #include <MainCircit/Valve/Valve.h>
 
 /************************************************************************/
 
 //----------------------------------------------------------------------//
 
-Valve :: Valve(const UartNum _uart_num)
-
-	: _mem_uart(_uart_num)
+Valve::Valve()
 {
-	_mem_past_data = 0x01;
-}
-
-//----------------------------------------------------------------------//
-
-Valve :: Valve(const UartNum _uart_num, const ValveData _init_data)
-
-	: _mem_uart(_uart_num)
-{
-	Set(_init_data);
+	_is_move_enabled = NO;
 	
-	_mem_past_data = _init_data + 1;
+	_state = CLOSE;
 }
 
 //----------------------------------------------------------------------//
 
-Uart::ModeTransmit * Valve :: Get_uart()
+Valve::Valve(const ValveNum _num)
 {
-	return &_mem_uart;
-}
-
-//----------------------------------------------------------------------//
-
-void Valve :: Write(Uart::ModeTransmit &_uart)
-{
-	if (_mem_past_data != Get())
-	{
-		_uart.Disable_9bit();
-		
-		_uart.Transmit_8bit(Get());
-		
-		_mem_past_data = Get();
-	}
-}
-
-//----------------------------------------------------------------------//
-
-void Valve :: Write_clear (Uart::ModeTransmit &_uart)
-{
-	_uart.Disable_9bit();
+	this->_num = _num;
 	
-	_uart.Transmit_8bit(0x00);
+	_state = CLOSE;
+	
+	_is_move_enabled = YES;
+}
+
+//----------------------------------------------------------------------//
+
+void Valve::Reset(const ValveNum _num)
+{
+	this->_num = _num;
+	
+	_is_move_enabled = YES;
+}
+
+//----------------------------------------------------------------------//
+
+void Valve::Set(const OpenClose _open_or_close)
+{
+	_state = _open_or_close;
+}
+
+//----------------------------------------------------------------------//
+
+void Valve::Open(const YesNo _is_done)
+{
+	if (_is_done)	_state = OPEN;
+}
+
+//----------------------------------------------------------------------//
+
+void Valve::Close(const YesNo _is_done)
+{
+	if (_is_done)	_state = CLOSE;
+}
+
+//----------------------------------------------------------------------//
+
+ValveNum Valve::Get_num()
+{
+	return _num;
+}
+
+//----------------------------------------------------------------------//
+
+ValveData Valve::Get_data()
+{
+	return (_is_move_enabled ? (_state << _num) : 0);
+}
+
+//----------------------------------------------------------------------//
+
+OpenClose Valve::Get_state()
+{
+	return _state;
 }
 
 //----------------------------------------------------------------------//

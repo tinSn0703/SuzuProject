@@ -1,13 +1,18 @@
 
-
 #include <akilcd/akilcd.h>
 #include <Others/Others.h>
 #include <MainCircit/Direction.h>
-#include <MainCircit/Controller/ControllerBase/ControllerBase.h>
+#include <MainCircit/Controller/ControllerBase/BaseControllerBase.h>
+#include <MainCircit/Controller/ControllerBase/BaseControllerGet.h>
+#include <MainCircit/Controller/ControllerBase/BaseControllerPush.h>
+#include <MainCircit/Controller/ControllerBase/BaseControllerRewrite.h>
+#include <MainCircit/Controller/ControllerBase/BaseControllerLCD.h>
 
 /************************************************************************/
 
-namespace ClassController
+namespace Controller
+{
+namespace Base
 {
 
 /************************************************************************/
@@ -16,7 +21,7 @@ namespace ClassController
 
 //----------------------------------------------------------------------//
 
-ControllerBase :: ControllerBase()
+ControllerBase::ControllerBase()
 {
 	_mem_data._array[0] = 0x00;
 	_mem_data._array[1] = 0xf0;
@@ -25,7 +30,7 @@ ControllerBase :: ControllerBase()
 
 //----------------------------------------------------------------------//
 
-void ControllerBase :: Clear()
+void ControllerBase::Clear()
 {
 	_mem_data._array[0] = 0x00;
 	_mem_data._array[1] = 0xf0;
@@ -36,14 +41,7 @@ void ControllerBase :: Clear()
 
 YesNo ControllerBase::Is_commnad_push()
 {
-	if (_mem_data._all_data == 0xfff000)
-	{
-		return NO;
-	}
-	else
-	{
-		return YES;
-	}
+	return ((_mem_data._all_data == 0xfff000) ? NO : YES);
 }
 
 //----------------------------------------------------------------------//
@@ -54,17 +52,20 @@ YesNo ControllerBase::Is_commnad_push()
 
 //----------------------------------------------------------------------//
 
-ControllerGet :: ControllerGet()	{}
+ControllerGet::ControllerGet()
+{
+	
+}
 
 //----------------------------------------------------------------------//
 
-ControllerData ControllerGet :: Get_data(const uByte _num)
+ControllerData ControllerGet::Get_data(const uByte _num)
 {
 	return
 	(
-		_num > 2 ? _mem_data._array[2] :
-		_num < 0 ? _mem_data._array[0] :
-		_mem_data._array[_num]
+		_num > 2 ? this->_mem_data._array[2] :
+		_num < 0 ? this->_mem_data._array[0] :
+		this->_mem_data._array[_num]
 	);
 }
 
@@ -76,17 +77,20 @@ ControllerData ControllerGet :: Get_data(const uByte _num)
 
 //----------------------------------------------------------------------//
 
-ControllerRewrite :: ControllerRewrite (const BOOL _is_poss_rewrite)
+ControllerRewrite::ControllerRewrite(const YesNo _is_rewrite_enabled)
 {
-	_mem_is_rewritten = _is_poss_rewrite;
+	this->_is_rewrite_enabled = _is_rewrite_enabled;
 }
 
 //----------------------------------------------------------------------//
 
-void ControllerRewrite :: Rewrite_base(const usint _bit, const int _data, const int _and)
+void ControllerRewrite::Rewrite_base(const uByte _bit, const int _data, const int _and)
 {
-	_mem_data._all_data &= ~(_and  << _bit);
-	_mem_data._all_data |=  (_data << _bit);
+	if (_is_rewrite_enabled)
+	{
+		this->_mem_data._all_data &= ~(_and << _bit);
+		this->_mem_data._all_data |= (_data << _bit);
+	}
 }
 
 //----------------------------------------------------------------------//
@@ -97,7 +101,7 @@ void ControllerRewrite :: Rewrite_base(const usint _bit, const int _data, const 
 
 //----------------------------------------------------------------------//
 
-ControllerPush :: ControllerPush ()
+ControllerPush::ControllerPush()
 {
 	_mem_stock._all._btns = 0;
 	_mem_stock._all._directions = 0;
@@ -105,13 +109,38 @@ ControllerPush :: ControllerPush ()
 
 //----------------------------------------------------------------------//
 
+void ControllerPush::Stock(const DataBit16 _receive_data)
+{
+	_mem_stock._all._btns = _receive_data;
+}
+
+//----------------------------------------------------------------------//
+
+void ControllerPush::Set_btn_data(const DataBit16 _receive_data)
+{
+	_mem_stock._all._directions = _mem_stock._all._btns;
+	
+	_mem_stock._all._btns = _receive_data;
+}
+
+//----------------------------------------------------------------------//
+
+Btn ControllerPush::Push(const ControllerBtn _bit)
+{
+	return (Btn)(((_mem_stock._all._btns & (~_mem_stock._all._directions)) >> _bit) & 1);
+}
+
+//----------------------------------------------------------------------//
+
+/************************************************************************/
+
 /************************************************************************/
 /*	ControllerLCD														*/
 /************************************************************************/
 
 //----------------------------------------------------------------------//
 
-ControllerLCD :: ControllerLCD()
+ControllerLCD::ControllerLCD()
 {
 	if ( ! LCD::Is_initialize())
 	{
@@ -122,6 +151,8 @@ ControllerLCD :: ControllerLCD()
 //----------------------------------------------------------------------//
 
 /************************************************************************/
+
+};
 
 };
 

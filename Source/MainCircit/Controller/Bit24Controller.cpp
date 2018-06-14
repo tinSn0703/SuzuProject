@@ -3,12 +3,13 @@
 #include <Others/Others.h>
 #include <AVR/Uart/Uart.h>
 #include <AVR/Timer/GeneralTimer.h>
+#include <AVR/Timer/Counter.h>
 #include <MainCircit/Direction.h>
 #include <MainCircit/Controller/Bit24Controller.h>
 
 /************************************************************************/
 
-namespace Bit24Controller
+namespace Controller
 {
 
 /************************************************************************/
@@ -34,20 +35,20 @@ Bit24Controller::Bit24Controller(const UartNum _uart_num, const BOOL _is_data_re
 
 void Bit24Controller::Allot()
 {
-	_mem_data._command._cross_x	= To_DirectionX((Is_true_the(_mem_receive_data[0], 5) << 1) | Is_true_the(_mem_receive_data[1], 1));
-	_mem_data._command._cross_y	= To_DirectionY((Is_true_the(_mem_receive_data[0], 4) << 1) | Is_true_the(_mem_receive_data[1], 0));
+	this->_mem_data._command._cross_x	= To_DirectionX((Is_true_the(_mem_receive_data[0], 5) << 1) | Is_true_the(_mem_receive_data[1], 1));
+	this->_mem_data._command._cross_y	= To_DirectionY((Is_true_the(_mem_receive_data[0], 4) << 1) | Is_true_the(_mem_receive_data[1], 0));
 	
-	_mem_data._command._stick_right_x	= To_DirectionX(_mem_receive_data[2] >> 4);
-	_mem_data._command._stick_right_y	= To_DirectionY(_mem_receive_data[3] >> 0);
+	this->_mem_data._command._stick_right_x	= To_DirectionX(_mem_receive_data[2] >> 4);
+	this->_mem_data._command._stick_right_y	= To_DirectionY(_mem_receive_data[3] >> 0);
 	
-	_mem_data._command._stick_left_x	= To_DirectionX(_mem_receive_data[3] >> 2);
-	_mem_data._command._stick_left_y	= To_DirectionY(_mem_receive_data[3] >> 4);
+	this->_mem_data._command._stick_left_x	= To_DirectionX(_mem_receive_data[3] >> 2);
+	this->_mem_data._command._stick_left_y	= To_DirectionY(_mem_receive_data[3] >> 4);
 	
-	_mem_data._btns._other = ((~_mem_receive_data[0]) & 0x0f);
+	this->_mem_data._btns._other = ((~_mem_receive_data[0]) & 0x0f);
 	
-	_mem_data._btns._right_left = ((~_mem_receive_data[1] >> 2) & 0x0f);
+	this->_mem_data._btns._right_left = ((~_mem_receive_data[1] >> 2) & 0x0f);
 	
-	_mem_data._btns._mark = ((~_mem_receive_data[2]) & 0x0f);
+	this->_mem_data._btns._mark = ((~_mem_receive_data[2]) & 0x0f);
 }
 
 //----------------------------------------------------------------------//
@@ -143,7 +144,10 @@ void Bit24Controller::Read()
 	{
 		Start_timer(TIME_READ_ERROR);
 		
-		Is_timer_finish();
+		if (Is_timer_finish())
+		{
+			Stop_timer();
+		}
 	}
 }
 

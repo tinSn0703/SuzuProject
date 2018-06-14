@@ -110,7 +110,7 @@ void Main::Fire()
 
 void Main::Fall()
 {
-	_valve_fall_support.Open_or_Close(_controller.Get_X(), (_valve_fall_stretch.Is_open() ? 0 : 200));
+	_valve_fall_support.Open(_controller.Get_X(), (_valve_fall_stretch.Is_open() ? 0 : 200));
 	
 	_valve_fall_stretch.Open_or_Close(_controller.Get_Y());
 	

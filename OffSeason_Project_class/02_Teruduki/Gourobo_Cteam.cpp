@@ -36,11 +36,14 @@ Main::Main()
 	: _controller(Uart::NUM_0)
 
 	, _wheel(Uart::NUM_1)
-	, _motor_arm_raise(4)
-	, _motor_arm_thrust(5)
+	, _motor_arm_raise(5)
+	, _motor_arm_thrust(6)
 
 	, _uart_valve(Uart::NUM_3)
 	, _valve_thrust(VALVE::NUM_0, VALVE::NUM_1)
+	
+	, _limit_arm_raise_over(IO::NUM_F, IO::BIT_0)
+	, _limit_arm_raise_under(IO::NUM_F, IO::BIT_1)
 {
 	if (LCD::Is_initialize())	LCD::Initialize();
 	
@@ -51,7 +54,7 @@ Main::Main()
 	_wheel.Set_wheel_place(WheelPlace::BACK_LEFT,	2);
 	_wheel.Set_wheel_place(WheelPlace::FRONT_LEFT,	3);
 	
-	_wheel.Set_front(90);
+	_wheel.Set_front(0);
 	
 	_wheel.Set(15);
 	
@@ -127,14 +130,17 @@ void Main :: Input()
 {
 	_controller.Read();
 	
+	_limit_arm_raise_over.Read();
+	_limit_arm_raise_under.Read();
+	
 	Unlock();
 	
 	Lock();
 	
-	_is_move_front	= _controller[L_STICK_NORTH];
-	_is_move_back	= _controller[L_STICK_SOUTH];
-	_is_move_right	= _controller[L_STICK_EAST];
-	_is_move_left	= _controller[L_STICK_WEST];
+	_is_move_front	= _controller(L_STICK_OVER);
+	_is_move_back	= _controller(L_STICK_UNDER);
+	_is_move_right	= _controller(L_STICK_RIGHT);
+	_is_move_left	= _controller(L_STICK_LEFT);
 }
 
 //----------------------------------------------------------------------//
@@ -294,17 +300,33 @@ void Main::Process()
 {
 	if (_is_movement_lock == NO)
 	{
+		switch (_controller.Get_R_stick_y())
+		{
+			case Direction::OVER:		_wheel.Set(25);	break;
+			case Direction::UNDER:		_wheel.Set(10);	break;
+			case Direction::yCENTER:	_wheel.Set(15);	break;
+		}
+		
 		Move_wheel();
 		
-		if		(_controller.Get_X())	_motor_arm_raise.Set(SIGNAL_FORWARD, 15);
-		else if	(_controller.Get_B())	_motor_arm_raise.Set(SIGNAL_REVERSE, 15);
-		else							_motor_arm_raise.Set(SIGNAL_BREAK);
+		if (_controller.Get_X() & _limit_arm_raise_over.Get())
+		{
+			_motor_arm_raise.Set(SIGNAL_FORWARD, 15);
+		}
+		else if (_controller.Get_B() & _limit_arm_raise_under.Get())
+		{
+			_motor_arm_raise.Set(SIGNAL_REVERSE, 15);
+		}
+		else
+		{
+			_motor_arm_raise.Set(SIGNAL_BREAK);
+		}
 		
-		if		(_controller.Get_A())	_motor_arm_thrust.Set(SIGNAL_FORWARD, 7);
-		else if	(_controller.Get_Y())	_motor_arm_thrust.Set(SIGNAL_REVERSE, 7);
+		if		(_controller.Get_A())	_motor_arm_thrust.Set(SIGNAL_FORWARD, 31);
+		else if	(_controller.Get_Y())	_motor_arm_thrust.Set(SIGNAL_REVERSE, 31);
 		else							_motor_arm_thrust.Set(SIGNAL_BREAK);
 		
-		_valve_thrust.Open_and_Close(_controller.Get_cross_key(Direction::NORTH), 500);
+		_valve_thrust.Open(_controller(BTN_CROSS_RIGHT));
 	}
 }
 

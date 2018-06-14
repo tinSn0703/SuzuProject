@@ -28,7 +28,7 @@ class Main
 //variables
 private:
 	
-	Bit24Controller::WiiClassic _controller;
+	Controller::WiiClassic _controller;
 	
 	FourOmuni _wheel;
 	

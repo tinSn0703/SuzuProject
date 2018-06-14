@@ -1,9 +1,10 @@
 
 #include <avr/io.h>
+#include <stdlib.h>
 #include <Others/Others.h>
 #include <AVR/IO/IoBase/IO_type.h>
 #include <AVR/IO/IoBase/IoBase.h>
-#include <AVR/IO/IO.h>
+#include <AVR/IO/IoPin.h>
 
 /************************************************************************/
 
@@ -16,118 +17,202 @@ namespace IO
 
 //----------------------------------------------------------------------//
 
-ModeOut :: ModeOut()	{}
+ModeOut::ModeOut()
+{}
 
 //----------------------------------------------------------------------//
 
 ModeOut :: ModeOut(const IoNum _io_adrs)
 
-	: IoBase(_io_adrs, 0xff)
+	: Base(_io_adrs, 0xff)
 {}
 
 //----------------------------------------------------------------------//
 
 void IO::ModeOut :: Reset(const IoNum _io_adrs)
 {
-	Initialize(_io_adrs, 0xff);
+	Base::Initialize(_io_adrs, 0xff);
 }
 
 //----------------------------------------------------------------------//
 
-/************************************************************************/
-/*	IoIn																*/
-/************************************************************************/
-
-//----------------------------------------------------------------------//
-
-ModeIn :: ModeIn()	{}
-
-//----------------------------------------------------------------------//
-
-ModeIn :: ModeIn(const IoNum _io_adrs)
-
-	: IoBase(_io_adrs, 0x00)
-{}
-
-//----------------------------------------------------------------------//
-
-void IO::ModeIn :: Reset(const IoNum _io_adrs)
+void ModeOut::Write(const IoData _out_data)
 {
-	Initialize(_io_adrs, 0x00);
+	Base::PORT(_out_data);
+}
+
+//----------------------------------------------------------------------//
+
+void ModeOut::Write(const YesNo _is_high, const IoBit _bit)
+{
+	Base::PORT(_bit, _is_high);
 }
 
 //----------------------------------------------------------------------//
 
 /************************************************************************/
 
-namespace Bit
+//----------------------------------------------------------------------//
+
+ModeIn::ModeIn()
 {
-
-/************************************************************************/
-
-//----------------------------------------------------------------------//
-
-ModeOut :: ModeOut()	{}
-
-//----------------------------------------------------------------------//
-
-ModeOut :: ModeOut(const IoNum _io_adrs, const IoBit _bit)
-
-	: IoBase(_io_adrs, _bit, TRUE)
-{}
-
-//----------------------------------------------------------------------//
-
-void ModeOut :: Reset(const IoNum _io_adrs, const IoBit _bit)
-{
-	Initialize(_io_adrs, _bit, TRUE);
 	
-	_mem_bit = _bit;
 }
 
 //----------------------------------------------------------------------//
 
-/************************************************************************/
-/*	IoInBit																*/
-/************************************************************************/
+ModeIn::ModeIn(const IoNum _io_adrs)
 
-//----------------------------------------------------------------------//
-
-ModeIn :: ModeIn()
+	: Base(_io_adrs, 0x00)
 {
-	_mem_read_data = LOW;
 	
-	_mem_is_read_reverse = NO;
 }
 
 //----------------------------------------------------------------------//
 
-ModeIn :: ModeIn(const IoNum _io_adrs, const IoBit _bit)
-
-	: IoBase(_io_adrs, _bit, FALSE)
+void ModeIn::Reset(const IoNum _io_adrs)
 {
-	_mem_read_data = LOW;
-	
-	_mem_is_read_reverse = NO;
-	
-	_mem_bit = _bit;
+	Base::Initialize(_io_adrs, 0x00);
 }
 
 //----------------------------------------------------------------------//
 
-void ModeIn :: Reset(const IoNum _io_adrs, const IoBit _bit)
+IoData ModeIn::Read()
 {
-	Initialize(_io_adrs, _bit, FALSE);
-	
-	_mem_bit = _bit;
+	return Base::PIN();
+}
+
+//----------------------------------------------------------------------//
+
+HighLow ModeIn::Read(const IoBit _bit)
+{
+	return Is_true_the(Base::PIN(), _bit);
 }
 
 //----------------------------------------------------------------------//
 
 /************************************************************************/
 
+//----------------------------------------------------------------------//
+
+ModeBitOut::ModeBitOut()
+{
+	
 }
 
+//----------------------------------------------------------------------//
+
+ModeBitOut::ModeBitOut(const IoNum _io_adrs, const IoBit _bit)
+
+	: Base(_io_adrs, _bit, TRUE)
+{	
+	this->_bit = _bit;
 }
+
+//----------------------------------------------------------------------//
+
+void ModeBitOut::Reset(const IoNum _io_adrs, const IoBit _bit)
+{
+	Base::Initialize(_io_adrs, _bit, TRUE);
+	
+	this->_bit = _bit;
+}
+
+//----------------------------------------------------------------------//
+
+void ModeBitOut::Write(const BOOL _is_high)
+{
+	Base::PORT(_bit, _is_high);
+}
+
+//----------------------------------------------------------------------//
+
+IoBit ModeBitOut::Get_bit()
+{
+	return _bit;
+}
+
+//----------------------------------------------------------------------//
+
+/************************************************************************/
+
+//----------------------------------------------------------------------//
+
+ModeBitIn::ModeBitIn()
+{
+	_read_data = LOW;
+	
+	_is_read_reverse = NO;
+}
+
+//----------------------------------------------------------------------//
+
+ModeBitIn::ModeBitIn(const IoNum _io_adrs, const IoBit _bit)
+
+	: Base(_io_adrs, _bit, FALSE)
+{
+	_read_data = LOW;
+	
+	_is_read_reverse = NO;
+	
+	this->_bit = _bit;
+}
+
+//----------------------------------------------------------------------//
+
+void ModeBitIn::Reset(const IoNum _io_adrs, const IoBit _bit)
+{
+	Base::Initialize(_io_adrs, _bit, FALSE);
+	
+	this->_bit = _bit;
+}
+
+//----------------------------------------------------------------------//
+
+void ModeBitIn::Want_to_read_reverse(const YesNo _yes_no)
+{
+	_is_read_reverse = _yes_no;
+}
+
+//----------------------------------------------------------------------//
+
+HighLow ModeBitIn::Read()
+{
+	_read_data =
+	(
+		(_is_read_reverse == YES) ?
+		Is_false_the(Base::PIN(), _bit) :
+		Is_true_the(Base::PIN(), _bit)
+	);
+	
+	return _read_data;
+}
+
+//----------------------------------------------------------------------//
+
+HighLow ModeBitIn::Get()
+{
+	return _read_data;
+}
+
+//----------------------------------------------------------------------//
+
+IoBit ModeBitIn::Get_bit()
+{
+	return _bit;
+}
+
+//----------------------------------------------------------------------//
+
+IoNum ModeBitIn::Get_num()
+{
+	return Base::Get_num();
+}
+
+//----------------------------------------------------------------------//
+
+/************************************************************************/
+
+};
 
 /************************************************************************/

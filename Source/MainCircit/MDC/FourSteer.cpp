@@ -28,6 +28,11 @@ const double UNIT_SET_DEG[NUM_WHEEL] = {+45.0, +135.0, -135.0, -45.0};
 
 /************************************************************************/
 
+using namespace WheelPlace;
+using namespace Direction;
+
+/************************************************************************/
+
 //----------------------------------------------------------------------//
 
 FourSteer::FourSteer(const UartNum _uart_num)
@@ -49,6 +54,20 @@ FourSteer::FourSteer(const UartNum _uart_num)
 
 //----------------------------------------------------------------------//
 
+void FourSteer::Read()
+{
+	for (int i = 0; i < NUM_WHEEL; i++)
+	{
+		_angle_meter[i].Read();
+		
+		_current_deg[i] = ((_angle_meter[i].Get_deg() - 180) * READ_CONSTANT);
+	}
+	
+	_is_angle_set = YES;
+}
+
+//----------------------------------------------------------------------//
+
 void FourSteer::Set_target_angle
 (
 	const double _deg_fr,
@@ -57,10 +76,10 @@ void FourSteer::Set_target_angle
 	const double _deg_fl
 )
 {
-	_target_deg[WheelPlace::FRONT_RIGHT	] = _deg_fr;
-	_target_deg[WheelPlace::BACK_RIGHT	] = _deg_br;
-	_target_deg[WheelPlace::BACK_LEFT	] = _deg_bl;
-	_target_deg[WheelPlace::FRONT_LEFT	] = _deg_fl;
+	_target_deg[FRONT_RIGHT	] = _deg_fr;
+	_target_deg[BACK_RIGHT	] = _deg_br;
+	_target_deg[BACK_LEFT	] = _deg_bl;
+	_target_deg[FRONT_LEFT	] = _deg_fl;
 }
 
 //----------------------------------------------------------------------//
@@ -91,14 +110,19 @@ void FourSteer::Set_target_angle(double _deg, const double _curve_persent)
 		{
 		public:
 			
-			double _ret;
+			double _ret_deg;
 			
-			Ramuda0()	{	_ret = 0;	}
+			Ramuda0()	{	_ret_deg = 0;	}
 			
-			double operator () (const double _set_deg, const double _deg, const double _per)
+			double operator () (const double _set_deg, const double _deg)
 			{
-				if (((_deg + 90) >= _set_deg) && (_set_deg > _deg))	return _ret;
-				if ((_deg > _set_deg) && (_set_deg >= (_deg - 90)))	return _ret;
+				if	(
+						(((_deg + 90) >= _set_deg) && (_set_deg > _deg)) ||
+						((_deg > _set_deg) && (_set_deg >= (_deg - 90)))
+					)
+				{
+					return _ret_deg;
+				}
 				
 				return 0;
 			}
@@ -107,28 +131,28 @@ void FourSteer::Set_target_angle(double _deg, const double _curve_persent)
 		
 		switch (Wheel::Get_turn_direc())
 		{
-			case RIGHT_TURN:	Plus_deg._ret = (-90.0 * _curve_persent / 100.0);	break;
-			case LEFT_TURN:		Plus_deg._ret = (+90.0 * _curve_persent / 100.0);	break;
+			case RIGHT_TURN:	Plus_deg._ret_deg = (-90.0 * _curve_persent / 100.0);	break;
+			case LEFT_TURN:		Plus_deg._ret_deg = (+90.0 * _curve_persent / 100.0);	break;
 			default:			break;
 		}
 		
-		_target_deg[WheelPlace::FRONT_RIGHT] += Plus_deg(UNIT_SET_DEG[WheelPlace::FRONT_RIGHT], _deg, _curve_persent);
-		_target_deg[WheelPlace::FRONT_LEFT]  += Plus_deg(UNIT_SET_DEG[WheelPlace::FRONT_LEFT], _deg, _curve_persent);
+		_target_deg[FRONT_RIGHT] += Plus_deg(UNIT_SET_DEG[FRONT_RIGHT], _deg);
+		_target_deg[FRONT_LEFT]  += Plus_deg(UNIT_SET_DEG[FRONT_LEFT], _deg);
 		
 		if (_deg >= +135)
 		{
-			_target_deg[WheelPlace::BACK_RIGHT] += Plus_deg(UNIT_SET_DEG[WheelPlace::BACK_RIGHT], _deg, _curve_persent);
-			_target_deg[WheelPlace::BACK_LEFT]  += Plus_deg(UNIT_SET_DEG[WheelPlace::BACK_LEFT] + 360.0, _deg, _curve_persent);
+			_target_deg[BACK_RIGHT] += Plus_deg(UNIT_SET_DEG[BACK_RIGHT], _deg);
+			_target_deg[BACK_LEFT]  += Plus_deg(UNIT_SET_DEG[BACK_LEFT] + 360.0, _deg);
 		}
 		else if (_deg <= -135)
 		{
-			_target_deg[WheelPlace::BACK_RIGHT] += Plus_deg(UNIT_SET_DEG[WheelPlace::BACK_RIGHT] - 360.0, _deg, _curve_persent);
-			_target_deg[WheelPlace::BACK_LEFT]  += Plus_deg(UNIT_SET_DEG[WheelPlace::BACK_LEFT], _deg, _curve_persent);
+			_target_deg[BACK_RIGHT] += Plus_deg(UNIT_SET_DEG[BACK_RIGHT] - 360.0, _deg);
+			_target_deg[BACK_LEFT]  += Plus_deg(UNIT_SET_DEG[BACK_LEFT], _deg);
 		}
 		else
 		{
-			_target_deg[WheelPlace::BACK_RIGHT] += Plus_deg(UNIT_SET_DEG[WheelPlace::BACK_RIGHT], _deg, _curve_persent);
-			_target_deg[WheelPlace::BACK_LEFT]  += Plus_deg(UNIT_SET_DEG[WheelPlace::BACK_LEFT], _deg, _curve_persent);
+			_target_deg[BACK_RIGHT] += Plus_deg(UNIT_SET_DEG[BACK_RIGHT], _deg);
+			_target_deg[BACK_LEFT]  += Plus_deg(UNIT_SET_DEG[BACK_LEFT], _deg);
 		}
 	}
 }
@@ -242,42 +266,6 @@ void FourSteer::Set_unit_power(const double _deg)
 
 //----------------------------------------------------------------------//
 
-void FourSteer::Dispaly_angle(const LcdAdrs _adrs, const double _deg)
-{
-	if ((-1 < _deg) && (_deg < 1))
-	{
-		LCD::Write(_adrs, " 000");
-	}
-	else if (_deg > 0)
-	{
-		LCD::Write(_adrs, '+');
-		
-		LCD::Write(_adrs + 1, (int)_deg, 3, DECIMAL_10);
-	}
-	else if (_deg < 0)
-	{
-		LCD::Write(_adrs, '-');
-		
-		LCD::Write(_adrs + 1, (int)(_deg * -1), 3, DECIMAL_10);
-	}
-}
-
-//----------------------------------------------------------------------//
-
-void FourSteer::Read()
-{
-	for (int i = 0; i < NUM_WHEEL; i++)
-	{
-		_angle_meter[i].Read();
-		
-		_current_deg[i] = ((_angle_meter[i].Get_deg() - 180) * READ_CONSTANT);
-	}
-	
-	_is_angle_set = YES;
-}
-
-//----------------------------------------------------------------------//
-
 void FourSteer::Move_wheel_unit
 (
 	const FourWheelPlace	_place, 
@@ -296,42 +284,6 @@ void FourSteer::Move_wheel_unit
 	else
 	{
 		_motor_angle[_place].Set(_sig, _pwm);
-	}
-}
-
-//----------------------------------------------------------------------//
-
-void FourSteer::Move()
-{
-	switch (Wheel::Get_move_direc_y())
-	{
-		case Direction::NORTH:
-		{
-			switch (Wheel::Get_move_direc_x())
-			{
-				case Direction::EAST:		Move(+45);	return (void)0;
-				case Direction::WEST:		Move(-45);	return (void)0;
-				case Direction::xCENTER:	Move(0);	return (void)0;
-			}
-		}
-		case Direction::SOUTH:
-		{
-			switch (Wheel::Get_move_direc_x())
-			{
-				case Direction::EAST:		Move(+135);	return (void)0;
-				case Direction::WEST:		Move(-135);	return (void)0;
-				case Direction::xCENTER:	Move(180);	return (void)0;
-			}
-		}
-		case Direction::yCENTER:
-		{
-			switch (Wheel::Get_move_direc_x())
-			{
-				case Direction::EAST:		Move(+90);	return (void)0;
-				case Direction::WEST:		Move(-90);	return (void)0;
-				case Direction::xCENTER:	Stop();		return (void)0;
-			}
-		}
 	}
 }
 
@@ -362,35 +314,35 @@ void FourSteer::Move(double _deg)
 
 //----------------------------------------------------------------------//
 
-void FourSteer::Curve(const double _curve_persent)
+void FourSteer::Move()
 {
 	switch (Wheel::Get_move_direc_y())
 	{
-		case Direction::NORTH:
+		case NORTH:
 		{
 			switch (Wheel::Get_move_direc_x())
 			{
-				case Direction::EAST:		Curve(+45, _curve_persent);	return (void)0;
-				case Direction::WEST:		Curve(-45, _curve_persent);	return (void)0;
-				case Direction::xCENTER:	Curve(0, _curve_persent);	return (void)0;
+				case EAST:		Move(+45);	return (void)0;
+				case WEST:		Move(-45);	return (void)0;
+				case xCENTER:	Move(0);	return (void)0;
 			}
 		}
-		case Direction::SOUTH:
+		case SOUTH:
 		{
 			switch (Wheel::Get_move_direc_x())
 			{
-				case Direction::EAST:		Curve(+135, _curve_persent);	return (void)0;
-				case Direction::WEST:		Curve(-135, _curve_persent);	return (void)0;
-				case Direction::xCENTER:	Curve(180, _curve_persent);		return (void)0;
+				case EAST:		Move(+135);	return (void)0;
+				case WEST:		Move(-135);	return (void)0;
+				case xCENTER:	Move(180);	return (void)0;
 			}
 		}
-		case Direction::yCENTER:
+		case yCENTER:
 		{
 			switch (Wheel::Get_move_direc_x())
 			{
-				case Direction::EAST:		Curve(+90, _curve_persent);	return (void)0;
-				case Direction::WEST:		Curve(-90, _curve_persent);	return (void)0;
-				case Direction::xCENTER:	Stop();						return (void)0;
+				case EAST:		Move(+90);	return (void)0;
+				case WEST:		Move(-90);	return (void)0;
+				case xCENTER:	Stop();		return (void)0;
 			}
 		}
 	}
@@ -423,6 +375,42 @@ void FourSteer::Curve(double _deg, const double _curve_persent)
 
 //----------------------------------------------------------------------//
 
+void FourSteer::Curve(const double _curve_persent)
+{
+	switch (Wheel::Get_move_direc_y())
+	{
+		case NORTH:
+		{
+			switch (Wheel::Get_move_direc_x())
+			{
+				case EAST:		Curve(+45, _curve_persent);	return (void)0;
+				case WEST:		Curve(-45, _curve_persent);	return (void)0;
+				case xCENTER:	Curve(0, _curve_persent);	return (void)0;
+			}
+		}
+		case SOUTH:
+		{
+			switch (Wheel::Get_move_direc_x())
+			{
+				case EAST:		Curve(+135, _curve_persent);	return (void)0;
+				case WEST:		Curve(-135, _curve_persent);	return (void)0;
+				case xCENTER:	Curve(180, _curve_persent);		return (void)0;
+			}
+		}
+		case yCENTER:
+		{
+			switch (Wheel::Get_move_direc_x())
+			{
+				case EAST:		Curve(+90, _curve_persent);	return (void)0;
+				case WEST:		Curve(-90, _curve_persent);	return (void)0;
+				case xCENTER:	Stop();						return (void)0;
+			}
+		}
+	}
+}
+
+//----------------------------------------------------------------------//
+
 void FourSteer::SpinTurn()
 {
 	if ((_is_angle_set) && (Wheel::Get_turn_direc() != NON_TURN))
@@ -445,10 +433,10 @@ void FourSteer::PivotTurn(const FourWheelPlace _turn_pivot)
 	{
 		switch (_turn_pivot)
 		{
-			case WheelPlace::FRONT_RIGHT:	Set_target_angle(90, -45, 0, 45);	break;
-			case WheelPlace::BACK_RIGHT:	Set_target_angle(45, 90, -45, 0);	break;
-			case WheelPlace::BACK_LEFT:		Set_target_angle(0, 45, 90, -45);	break;
-			case WheelPlace::FRONT_LEFT:	Set_target_angle(-45, 0, 45, 90);	break;
+			case FRONT_RIGHT:	Set_target_angle(90, -45, 0, 45);	break;
+			case BACK_RIGHT:	Set_target_angle(45, 90, -45, 0);	break;
+			case BACK_LEFT:		Set_target_angle(0, 45, 90, -45);	break;
+			case FRONT_LEFT:	Set_target_angle(-45, 0, 45, 90);	break;
 		}
 		
 		Set_unit_power(Wheel::Get_turn_direc());
@@ -527,6 +515,28 @@ void FourSteer::Dispaly_target_angle(const LcdAdrs _adrs)
 	for (uByte i = 0; i < NUM_WHEEL; i++)
 	{
 		Dispaly_angle(_adrs + 4 * i, _target_deg[i]);
+	}
+}
+
+//----------------------------------------------------------------------//
+
+void FourSteer::Dispaly_angle(const LcdAdrs _adrs, const double _deg)
+{
+	if ((-1 < _deg) && (_deg < 1))
+	{
+		LCD::Write(_adrs, " 000");
+	}
+	else if (_deg > 0)
+	{
+		LCD::Write(_adrs, '+');
+		
+		LCD::Write(_adrs + 1, (int)_deg, 3, DECIMAL_10);
+	}
+	else if (_deg < 0)
+	{
+		LCD::Write(_adrs, '-');
+		
+		LCD::Write(_adrs + 1, (int)(_deg * -1), 3, DECIMAL_10);
 	}
 }
 

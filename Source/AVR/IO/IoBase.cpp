@@ -6,6 +6,11 @@
 
 /************************************************************************/
 
+namespace IO
+{
+
+/************************************************************************/
+
 //----------------------------------------------------------------------//
 
 static inline void Write_PORTA(uByte _data)	{	PORTA = _data;	}
@@ -68,18 +73,18 @@ static inline uByte Read_PINK()	{	return PINK;	}
 
 //----------------------------------------------------------------------//
 
-IoBase :: IoBase()	{}
+Base::Base()	{}
 
 //----------------------------------------------------------------------//
 
-IoBase :: IoBase (const IoNum _io_adrs, const uByte _set_in_or_out)
+Base::Base(const IoNum _io_adrs, const uByte _set_in_or_out)
 {
 	Initialize(_io_adrs, _set_in_or_out);
 }
 
 //----------------------------------------------------------------------//
 
-IoBase :: IoBase
+Base::Base
 (
 	const IoNum	_io_adrs, 
 	const IoBit	_bit, 
@@ -91,7 +96,7 @@ IoBase :: IoBase
 
 //----------------------------------------------------------------------//
 
-void IoBase :: Initialize
+void Base::Initialize
 (
 	const IoNum	_io_adrs, 
 	const IoBit	_bit, 
@@ -109,7 +114,7 @@ void IoBase :: Initialize
 
 //----------------------------------------------------------------------//
 
-void IoBase :: Initialize(const IoNum _io_adrs, const uByte _set_in_or_out)
+void Base::Initialize(const IoNum _io_adrs, const uByte _set_in_or_out)
 {
 	_mem_io_adrs = _io_adrs;
 	
@@ -122,14 +127,14 @@ void IoBase :: Initialize(const IoNum _io_adrs, const uByte _set_in_or_out)
 
 //----------------------------------------------------------------------//
 
-uByte IoBase :: PORT()
+uByte Base::PORT()
 {
 	return (*_r_port)();
 }
 
 //----------------------------------------------------------------------//
 
-uByte IoBase :: PORT(const uByte _data)
+uByte Base::PORT(const uByte _data)
 {
 	(*_w_port)(_data);
 	
@@ -138,7 +143,7 @@ uByte IoBase :: PORT(const uByte _data)
 
 //----------------------------------------------------------------------//
 
-uByte IoBase :: PORT(const IoBit _bit, const BOOL _is_on)
+uByte Base::PORT(const IoBit _bit, const BOOL _is_on)
 {
 	(*_w_port)((*_r_port)() & ~(1		<< _bit));
 	(*_w_port)((*_r_port)() |  (_is_on	<< _bit));
@@ -148,14 +153,31 @@ uByte IoBase :: PORT(const IoBit _bit, const BOOL _is_on)
 
 //----------------------------------------------------------------------//
 
-uByte IoBase :: PIN()
+uByte Base::PIN()
 {
 	return (*_r_pin)();
 }
 
 //----------------------------------------------------------------------//
 
-void IoBase :: Set_DDR (const uByte _set_in_or_out)
+void Base :: Enable_isr()
+{
+	if (_mem_io_adrs)
+	{
+		
+	}
+}
+
+//----------------------------------------------------------------------//
+
+inline IoNum Base :: Get_num()
+{
+	return _mem_io_adrs;
+}
+
+//----------------------------------------------------------------------//
+
+void Base :: Set_DDR (const uByte _set_in_or_out)
 {
 	switch (Get_num())
 	{
@@ -180,7 +202,7 @@ void IoBase :: Set_DDR (const uByte _set_in_or_out)
 
 //----------------------------------------------------------------------//
 
-void IoBase :: Set_DDR (const IoBit _bit, const BOOL _is_out_mode)
+void Base :: Set_DDR (const IoBit _bit, const BOOL _is_out_mode)
 {
 	switch (Get_num())
 	{
@@ -205,7 +227,7 @@ void IoBase :: Set_DDR (const IoBit _bit, const BOOL _is_out_mode)
 
 //----------------------------------------------------------------------//
 
-void IoBase :: Set_r_pin()
+void Base :: Set_r_pin()
 {
 	switch (Get_num())
 	{
@@ -230,7 +252,7 @@ void IoBase :: Set_r_pin()
 
 //----------------------------------------------------------------------//
 
-void IoBase :: Set_r_port()
+void Base :: Set_r_port()
 {
 	switch (Get_num())
 	{
@@ -255,7 +277,7 @@ void IoBase :: Set_r_port()
 
 //----------------------------------------------------------------------//
 
-void IoBase :: Set_w_port()
+void Base :: Set_w_port()
 {
 	switch (Get_num())
 	{
@@ -280,21 +302,8 @@ void IoBase :: Set_w_port()
 
 //----------------------------------------------------------------------//
 
-void IoBase :: Enable_isr()
-{
-	if (_mem_io_adrs)
-	{
-		
-	}
-}
+/************************************************************************/
 
-//----------------------------------------------------------------------//
-
-inline IoNum IoBase :: Get_num()
-{
-	return _mem_io_adrs;
-}
-
-//----------------------------------------------------------------------//
+};
 
 /************************************************************************/

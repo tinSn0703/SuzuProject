@@ -50,6 +50,8 @@ Main::Main()
 	
 	_wheel.Set(5);
 	
+	_timer_lcd_reset = Timer::General::Set_counter(15000);
+	
 	_is_unlock = NO;
 }
 
@@ -71,6 +73,13 @@ void Main::Input()
 		LCD::Initialize();
 		
 		_is_unlock = YES;
+	}
+	
+	if (Timer::General::Is_current_bigger_than(_timer_lcd_reset))
+	{
+		_timer_lcd_reset = Timer::General::Set_counter(15000);
+		
+		LCD::Initialize();
 	}
 	
 	_wheel.Set_move_direction(_controller.Get_L_stick_x(), _controller.Get_L_stick_y());
@@ -110,6 +119,11 @@ void Main::Process()
 			}
 			default:
 			{
+				if (_controller.Get_Triangle())		_wheel.Set(31);
+				else if (_controller.Get_Cross())	_wheel.Set(5);
+				else if (_controller.Get_Circle())	_wheel.Set(10);
+				else if (_controller.Get_Square())	_wheel.Set(10);
+				
 				if (_wheel.Is_move())
 				{
 					_wheel.Curve(_controller.Get_R2(), _controller.Get_L2(), 25);

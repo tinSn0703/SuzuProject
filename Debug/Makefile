@@ -33,6 +33,35 @@ LINKER_SCRIPT_DEP:=
 
 # Every subdirectory with source files must be described here
 SUBDIRS :=  \
+../Include/ \
+../Include/akilcd/ \
+../Include/akilcd/akilcd_define/ \
+../Include/akilcd/akilcd_name/ \
+../Include/AVR/ \
+../Include/AVR/ADChange/ \
+../Include/AVR/IO/ \
+../Include/AVR/IO/IoBase/ \
+../Include/AVR/Timer/ \
+../Include/AVR/Uart/ \
+../Include/AVR/Uart/UartBase/ \
+../Include/AVR/Uart/Uart/ \
+../Include/BTC/ \
+../Include/BTC/BTC_Base/ \
+../Include/BTC_expansion/ \
+../Include/MainCircit/ \
+../Include/MainCircit/Controller/ \
+../Include/MainCircit/Controller/ControllerBase/ \
+../Include/MainCircit/Cylinder/ \
+../Include/MainCircit/Lolita/ \
+../Include/MainCircit/MDC/ \
+../Include/MainCircit/Motor/ \
+../Include/MainCircit/Motor/MotorBase/ \
+../Include/MainCircit/Servo/ \
+../Include/MainCircit/Valve/ \
+../Include/MainCircit/Valve/ValveBase/ \
+../Include/MainCircit/Valve/ValveBase/ValveBase_inline/ \
+../Include/Others/ \
+../Parallel \
 ../OffSeason_Project_class/ \
 ../OffSeason_Project_class/01_Akiduki/ \
 ../OffSeason_Project_class/02_Teruduki/ \
@@ -44,7 +73,7 @@ SUBDIRS :=  \
 ../Source/AVR/Timer/ \
 ../Source/AVR/Uart/ \
 ../Source/MainCircit/ \
-../Source/MainCircit/AirCylinder/ \
+../Source/MainCircit/Cylinder \
 ../Source/MainCircit/Controller/ \
 ../Source/MainCircit/Lolita/ \
 ../Source/MainCircit/MDC/ \
@@ -57,21 +86,29 @@ SUBDIRS :=  \
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../main.cpp \
+../OffSeason_Project_class/01_Akiduki/SelfPosition.cpp \
 ../OffSeason_Project_class/01_Akiduki/TecnicSteer.cpp \
 ../OffSeason_Project_class/02_Teruduki/AIG_No_0.cpp \
 ../OffSeason_Project_class/02_Teruduki/Gourobo_Cteam.cpp \
+../Parallel/Parallel.c \
 ../Source/akilcd/akilcd.c \
 ../Source/AVR/ADChange/ADChange.cpp \
 ../Source/AVR/IO/IO.cpp \
 ../Source/AVR/IO/IoBase.cpp \
 ../Source/AVR/Timer/GeneralTimer.cpp \
+../Source/AVR/Timer/Counter.cpp \
 ../Source/AVR/Uart/Uart.cpp \
 ../Source/AVR/Uart/UartBase.cpp \
 ../Source/AVR/Uart/Uart_func.cpp \
-../Source/MainCircit/AirCylinder/AirCylinder.cpp \
+../Source/MainCircit/Controller/ControllerSingleLine.cpp \
+../Source/MainCircit/Controller/Ver2Bit24Controller.cpp \
+../Source/MainCircit/Controller/Ver2ControllerBase.cpp \
+../Source/MainCircit/Controller/Ver2Dualshock2.cpp \
+../Source/MainCircit/Cylinder/DoubleCylinder.cpp \
+../Source/MainCircit/Cylinder/SingleCylinder.cpp \
 ../Source/MainCircit/Controller/Bit24Controller.cpp \
 ../Source/MainCircit/Controller/ContollerDoubleLine.cpp \
-../Source/MainCircit/Controller/Controller28bit.cpp \
+../Source/MainCircit/Controller/Bit28Controller.cpp \
 ../Source/MainCircit/Controller/ControllerBase.cpp \
 ../Source/MainCircit/Controller/Dualshock2.cpp \
 ../Source/MainCircit/Controller/WiiClassic.cpp \
@@ -88,8 +125,6 @@ C_SRCS +=  \
 ../Source/MainCircit/Motor/MotorRotationOnly.cpp \
 ../Source/MainCircit/Servo/Servo.cpp \
 ../Source/MainCircit/Valve/Valve.cpp \
-../Source/MainCircit/Valve/ValveBase.cpp \
-../Source/MainCircit/Valve/ValveBit.cpp \
 ../Source/MainCircit/Valve/ValveDouble.cpp \
 ../Source/MainCircit/Valve/ValveSingle.cpp
 
@@ -102,21 +137,29 @@ ASM_SRCS +=
 
 OBJS +=  \
 main.o \
+OffSeason_Project_class/01_Akiduki/SelfPosition.o \
 OffSeason_Project_class/01_Akiduki/TecnicSteer.o \
 OffSeason_Project_class/02_Teruduki/AIG_No_0.o \
 OffSeason_Project_class/02_Teruduki/Gourobo_Cteam.o \
+Parallel/Parallel.o \
 Source/akilcd/akilcd.o \
 Source/AVR/ADChange/ADChange.o \
 Source/AVR/IO/IO.o \
 Source/AVR/IO/IoBase.o \
 Source/AVR/Timer/GeneralTimer.o \
+Source/AVR/Timer/Counter.o \
 Source/AVR/Uart/Uart.o \
 Source/AVR/Uart/UartBase.o \
 Source/AVR/Uart/Uart_func.o \
-Source/MainCircit/AirCylinder/AirCylinder.o \
+Source/MainCircit/Controller/ControllerSingleLine.o \
+Source/MainCircit/Controller/Ver2Bit24Controller.o \
+Source/MainCircit/Controller/Ver2ControllerBase.o \
+Source/MainCircit/Controller/Ver2Dualshock2.o \
+Source/MainCircit/Cylinder/DoubleCylinder.o \
+Source/MainCircit/Cylinder/SingleCylinder.o \
 Source/MainCircit/Controller/Bit24Controller.o \
 Source/MainCircit/Controller/ContollerDoubleLine.o \
-Source/MainCircit/Controller/Controller28bit.o \
+Source/MainCircit/Controller/Bit28Controller.o \
 Source/MainCircit/Controller/ControllerBase.o \
 Source/MainCircit/Controller/Dualshock2.o \
 Source/MainCircit/Controller/WiiClassic.o \
@@ -133,28 +176,34 @@ Source/MainCircit/Motor/MotorBase.o \
 Source/MainCircit/Motor/MotorRotationOnly.o \
 Source/MainCircit/Servo/Servo.o \
 Source/MainCircit/Valve/Valve.o \
-Source/MainCircit/Valve/ValveBase.o \
-Source/MainCircit/Valve/ValveBit.o \
 Source/MainCircit/Valve/ValveDouble.o \
 Source/MainCircit/Valve/ValveSingle.o
 
 OBJS_AS_ARGS +=  \
 main.o \
+OffSeason_Project_class/01_Akiduki/SelfPosition.o \
 OffSeason_Project_class/01_Akiduki/TecnicSteer.o \
 OffSeason_Project_class/02_Teruduki/AIG_No_0.o \
 OffSeason_Project_class/02_Teruduki/Gourobo_Cteam.o \
+Parallel/Parallel.o \
 Source/akilcd/akilcd.o \
 Source/AVR/ADChange/ADChange.o \
 Source/AVR/IO/IO.o \
 Source/AVR/IO/IoBase.o \
 Source/AVR/Timer/GeneralTimer.o \
+Source/AVR/Timer/Counter.o \
 Source/AVR/Uart/Uart.o \
 Source/AVR/Uart/UartBase.o \
 Source/AVR/Uart/Uart_func.o \
-Source/MainCircit/AirCylinder/AirCylinder.o \
+Source/MainCircit/Controller/ControllerSingleLine.o \
+Source/MainCircit/Controller/Ver2Bit24Controller.o \
+Source/MainCircit/Controller/Ver2ControllerBase.o \
+Source/MainCircit/Controller/Ver2Dualshock2.o \
+Source/MainCircit/Cylinder/DoubleCylinder.o \
+Source/MainCircit/Cylinder/SingleCylinder.o \
 Source/MainCircit/Controller/Bit24Controller.o \
 Source/MainCircit/Controller/ContollerDoubleLine.o \
-Source/MainCircit/Controller/Controller28bit.o \
+Source/MainCircit/Controller/Bit28Controller.o \
 Source/MainCircit/Controller/ControllerBase.o \
 Source/MainCircit/Controller/Dualshock2.o \
 Source/MainCircit/Controller/WiiClassic.o \
@@ -171,28 +220,34 @@ Source/MainCircit/Motor/MotorBase.o \
 Source/MainCircit/Motor/MotorRotationOnly.o \
 Source/MainCircit/Servo/Servo.o \
 Source/MainCircit/Valve/Valve.o \
-Source/MainCircit/Valve/ValveBase.o \
-Source/MainCircit/Valve/ValveBit.o \
 Source/MainCircit/Valve/ValveDouble.o \
 Source/MainCircit/Valve/ValveSingle.o
 
 C_DEPS +=  \
 main.d \
+OffSeason_Project_class/01_Akiduki/SelfPosition.d \
 OffSeason_Project_class/01_Akiduki/TecnicSteer.d \
 OffSeason_Project_class/02_Teruduki/AIG_No_0.d \
 OffSeason_Project_class/02_Teruduki/Gourobo_Cteam.d \
+Parallel/Parallel.d \
 Source/akilcd/akilcd.d \
 Source/AVR/ADChange/ADChange.d \
 Source/AVR/IO/IO.d \
 Source/AVR/IO/IoBase.d \
 Source/AVR/Timer/GeneralTimer.d \
+Source/AVR/Timer/Counter.d \
 Source/AVR/Uart/Uart.d \
 Source/AVR/Uart/UartBase.d \
 Source/AVR/Uart/Uart_func.d \
-Source/MainCircit/AirCylinder/AirCylinder.d \
+Source/MainCircit/Controller/ControllerSingleLine.d \
+Source/MainCircit/Controller/Ver2Bit24Controller.d \
+Source/MainCircit/Controller/Ver2ControllerBase.d \
+Source/MainCircit/Controller/Ver2Dualshock2.d \
+Source/MainCircit/Cylinder/DoubleCylinder.d \
+Source/MainCircit/Cylinder/SingleCylinder.d \
 Source/MainCircit/Controller/Bit24Controller.d \
 Source/MainCircit/Controller/ContollerDoubleLine.d \
-Source/MainCircit/Controller/Controller28bit.d \
+Source/MainCircit/Controller/Bit28Controller.d \
 Source/MainCircit/Controller/ControllerBase.d \
 Source/MainCircit/Controller/Dualshock2.d \
 Source/MainCircit/Controller/WiiClassic.d \
@@ -209,28 +264,34 @@ Source/MainCircit/Motor/MotorBase.d \
 Source/MainCircit/Motor/MotorRotationOnly.d \
 Source/MainCircit/Servo/Servo.d \
 Source/MainCircit/Valve/Valve.d \
-Source/MainCircit/Valve/ValveBase.d \
-Source/MainCircit/Valve/ValveBit.d \
 Source/MainCircit/Valve/ValveDouble.d \
 Source/MainCircit/Valve/ValveSingle.d
 
 C_DEPS_AS_ARGS +=  \
 main.d \
+OffSeason_Project_class/01_Akiduki/SelfPosition.d \
 OffSeason_Project_class/01_Akiduki/TecnicSteer.d \
 OffSeason_Project_class/02_Teruduki/AIG_No_0.d \
 OffSeason_Project_class/02_Teruduki/Gourobo_Cteam.d \
+Parallel/Parallel.d \
 Source/akilcd/akilcd.d \
 Source/AVR/ADChange/ADChange.d \
 Source/AVR/IO/IO.d \
 Source/AVR/IO/IoBase.d \
 Source/AVR/Timer/GeneralTimer.d \
+Source/AVR/Timer/Counter.d \
 Source/AVR/Uart/Uart.d \
 Source/AVR/Uart/UartBase.d \
 Source/AVR/Uart/Uart_func.d \
-Source/MainCircit/AirCylinder/AirCylinder.d \
+Source/MainCircit/Controller/ControllerSingleLine.d \
+Source/MainCircit/Controller/Ver2Bit24Controller.d \
+Source/MainCircit/Controller/Ver2ControllerBase.d \
+Source/MainCircit/Controller/Ver2Dualshock2.d \
+Source/MainCircit/Cylinder/DoubleCylinder.d \
+Source/MainCircit/Cylinder/SingleCylinder.d \
 Source/MainCircit/Controller/Bit24Controller.d \
 Source/MainCircit/Controller/ContollerDoubleLine.d \
-Source/MainCircit/Controller/Controller28bit.d \
+Source/MainCircit/Controller/Bit28Controller.d \
 Source/MainCircit/Controller/ControllerBase.d \
 Source/MainCircit/Controller/Dualshock2.d \
 Source/MainCircit/Controller/WiiClassic.d \
@@ -247,8 +308,6 @@ Source/MainCircit/Motor/MotorBase.d \
 Source/MainCircit/Motor/MotorRotationOnly.d \
 Source/MainCircit/Servo/Servo.d \
 Source/MainCircit/Valve/Valve.d \
-Source/MainCircit/Valve/ValveBase.d \
-Source/MainCircit/Valve/ValveBit.d \
 Source/MainCircit/Valve/ValveDouble.d \
 Source/MainCircit/Valve/ValveSingle.d
 
@@ -339,115 +398,134 @@ LINKER_SCRIPT_DEP+=
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 ./%.o: .././%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 OffSeason_Project_class/01_Akiduki/%.o: ../OffSeason_Project_class/01_Akiduki/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 OffSeason_Project_class/02_Teruduki/%.o: ../OffSeason_Project_class/02_Teruduki/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+Parallel/%.o: ../Parallel/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/akilcd/%.o: ../Source/akilcd/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/AVR/ADChange/%.o: ../Source/AVR/ADChange/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/AVR/IO/%.o: ../Source/AVR/IO/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/AVR/Timer/%.o: ../Source/AVR/Timer/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/AVR/Uart/%.o: ../Source/AVR/Uart/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
-Source/MainCircit/AirCylinder/%.o: ../Source/MainCircit/AirCylinder/%.cpp
-	@echo Building file: $<
-	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/MainCircit/Controller/%.o: ../Source/MainCircit/Controller/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+Source/MainCircit/Cylinder/%.o: ../Source/MainCircit/Cylinder/%.cpp
+	@echo Building file: $<
+	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/MainCircit/Lolita/%.o: ../Source/MainCircit/Lolita/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/MainCircit/%.o: ../Source/MainCircit/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/MainCircit/MDC/%.o: ../Source/MainCircit/MDC/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/MainCircit/Motor/%.o: ../Source/MainCircit/Motor/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/MainCircit/Servo/%.o: ../Source/MainCircit/Servo/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 Source/MainCircit/Valve/%.o: ../Source/MainCircit/Valve/%.cpp
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\include" -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\Library\New_Library\Include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=10000000UL  -I"C:\Users\FUJITSU\Documents\Atmel Studio\7.0\SuzuProject\SuzuProject\Include" -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
@@ -476,7 +554,7 @@ all: $(OUTPUT_FILE_PATH) $(ADDITIONAL_DEPENDENCIES)
 $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP) $(LIB_DEP) $(LINKER_SCRIPT_DEP)
 	@echo Building target: $@
 	@echo Invoking: AVR8/GNU Linker : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="SuzuProject.map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.132\gcc\dev\atmega640"  
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="SuzuProject.map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=atmega640 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\gcc\dev\atmega640"  
 	@echo Finished building target: $@
 	"C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "SuzuProject.elf" "SuzuProject.hex"
 	"C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "SuzuProject.elf" "SuzuProject.eep" || exit 0

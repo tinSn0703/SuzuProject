@@ -40,7 +40,9 @@ private:
 	
 	FourSteer _wheel;
 	
-	Bit24Controller::Dualshock2 _controller;
+	Controller::Dualshock2 _controller;
+	
+	CountValue _timer_lcd_reset;
 	
 	YesNo _is_unlock :1;
 };

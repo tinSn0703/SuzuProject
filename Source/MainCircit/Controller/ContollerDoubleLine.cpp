@@ -3,26 +3,41 @@
 #include <Others/Others.h>
 #include <AVR/Uart/Uart.h>
 #include <AVR/Timer/GeneralTimer.h>
+#include <AVR/Timer/Counter.h>
 #include <MainCircit/Direction.h>
-#include <MainCircit/Controller/Bit24Controller.h>
-#include <MainCircit/Controller/ControllerDoubleLine.h>
+#include <MainCircit/Controller/ControllerBase/Controller_type.h>
+#include <MainCircit/Controller/ControllerBase/ControllerSingleLine.h>
+#include <MainCircit/Controller/ControllerBase/ControllerDoubleLine.h>
 
-/************************************************************************/
-
-namespace Bit24Controller
+namespace Controller
 {
 
 /************************************************************************/
 
 //----------------------------------------------------------------------//
 
-ControllerBaseDoubleLine::ControllerBaseDoubleLine
+DoubleLine::DoubleLine
+(
+	const UartNum	_uart_num, 
+	fpStoreData		_store,
+	const uByte		_num_data_byte
+)
+	: SingleLine(_uart_num, _store, _num_data_byte)
+	, _mem_uart_sub(_uart_num)
+{
+	_mem_is_main_line_use = YES;
+}
+
+//----------------------------------------------------------------------//
+
+DoubleLine::DoubleLine
 (
 	const UartNum	_uart_num_main, 
-	const UartNum	_uart_num_sub, 
-	const YesNo		_is_data_rewrite /* = NO */
+	const UartNum	_uart_num_sub,
+	fpStoreData		_store, 
+	const uByte		_num_data_byte
 )
-	: Bit24Controller(_uart_num_main, _is_data_rewrite)
+	: SingleLine(_uart_num_main, _store, _num_data_byte)
 	, _mem_uart_sub(_uart_num_sub)
 {
 	_mem_is_main_line_use = YES;
@@ -30,42 +45,33 @@ ControllerBaseDoubleLine::ControllerBaseDoubleLine
 
 //----------------------------------------------------------------------//
 
-void ControllerBaseDoubleLine::Read_double()
+void DoubleLine::Read(ControllerData _data[])
 {
 	if (_mem_uart.Is_receive_finished())
 	{
-		_mem_is_main_line_use = YES;
+		SingleLine::Receive(_mem_uart, _data);
 		
-		Receive(_mem_uart);
-		
-		Allot();
-	}
-	else
-	{
-		if (_mem_is_main_line_use)
-		{
-			Start_timer(TIME_READ_ERROR_DOUBLE);
-			
-			if (Is_timer_finish())
-			{
-				Stop_timer();
-				
-				_mem_is_main_line_use = NO;
-			}
-		}
-		else
+		if (SingleLine::Get_error_state() == READ_INCOMPLETE)
 		{
 			if (_mem_uart_sub.Is_receive_finished())
 			{
-				Receive(_mem_uart);
-				
-				Allot();
+				SingleLine::Receive(_mem_uart_sub, _data);
 			}
-			else
+		}
+	}
+	else
+	{
+		if (_mem_uart_sub.Is_receive_finished())
+		{
+			SingleLine::Receive(_mem_uart_sub, _data);
+		}
+		else
+		{
+			SingleLine::Start_timer(TIME_READ_ERROR_DOUBLE);
+			
+			if (SingleLine::Is_finshed_timer())
 			{
-				Start_timer(TIME_READ_ERROR_DOUBLE);
-				
-				Is_timer_finish();
+				SingleLine::Finish_timer();
 			}
 		}
 	}
